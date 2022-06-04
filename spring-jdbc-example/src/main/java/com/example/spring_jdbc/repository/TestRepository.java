@@ -19,6 +19,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * https://qiita.com/koashi/items/e4d428618f787f6d2d98
+ * https://qiita.com/suema0331/items/d7ccfd5aa2c983edbeab
+ */
+
 @Repository
 public class TestRepository {
 
@@ -75,6 +80,10 @@ public class TestRepository {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id)
                 .addValue("message", "%test%");
+
+        for ( String paramName : params.getParameterNames() ) {
+            System.out.println(paramName + "->" + params.getValue(paramName));
+        }
 
         return namedParameterJdbcTemplate.query("select * from test where id >= :id and message like :message",
                                                         params,
