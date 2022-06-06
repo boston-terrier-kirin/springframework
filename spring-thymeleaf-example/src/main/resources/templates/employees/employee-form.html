@@ -1,0 +1,28 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<title>Thymeleaf Example</title>
+</head>
+
+<body>
+	<div class="container">
+		<h3>New Employee</h3>
+		<hr />
+		<div class="mb-4">
+			<form th:action="@{/employees/save}" th:object="${employee}" method="post">
+				<input type="hidden" th:field="${employee.id}" />
+				<input type="text" th:field="${employee.firstName}" class="form-control mb-4" placeholder="First Name" />
+				<input type="text" th:field="${employee.lastName}" class="form-control mb-4" placeholder="Last Name" />
+				<input type="email" th:field="${employee.email}" class="form-control mb-4" placeholder="Email" />
+				<button class="btn btn-info col-2">Save</button>
+			</form>
+		</div>
+		<div>
+			<a th:href="@{/employees/list}">Back to Employee List</a>
+		</div>
+	</div>
+</body>
+</html>
