@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layouts::header"></head>
+<body>
+	<nav th:replace="layouts::navbar"></nav>
+	<div class="container">
+		<h3>Main Dashboard</h3>
+		<hr />
+		<div class="row">
+			<div class="col-md-6">
+				<h4>Current Projects</h4>
+				<table class="table table-bordered table-hover">
+					<thead class="table-dark">
+						<tr>
+							<th>Project</th>
+							<th>Stage</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="project : ${projects}">
+							<td th:text="${project.name}"></td>
+							<td th:text="${project.stage}"></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h4>Assigned Employees</h4>
+				<table class="table table-bordered table-hover">
+					<thead class="table-dark">
+						<tr>
+							<th>First Name</th>
+							<th>Last Stage</th>
+							<th>Assigned Projects</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="employee : ${employeeProjects}">
+							<td th:text="${employee.firstName}"></td>
+							<td th:text="${employee.lastName}"></td>
+							<td th:text="${employee.projectCount}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-md-4">
+				<canvas id="myPieChart" width="400" height="400"></canvas>
+				<script>
+					// 今になって気づく。ここで変数に展開しておけば、myChart.jsで参照できる。
+					const chartData = "[[${projectStatus}]]";
+				</script>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/js/myChart.js}"></script>
+</body>
+</html>

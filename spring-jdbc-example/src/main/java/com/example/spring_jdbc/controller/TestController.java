@@ -11,6 +11,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * spring-boot-starter-data-jdbc
+ *   と
+ * spring-boot-starter-jdbc
+ *   は違うらしい。
+ */
 @Controller
 public class TestController {
 
