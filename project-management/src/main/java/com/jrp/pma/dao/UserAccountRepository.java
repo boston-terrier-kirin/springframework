@@ -7,5 +7,5 @@ import com.jrp.pma.entity.UserAccount;
 
 @Repository
 public interface UserAccountRepository extends CrudRepository<UserAccount, Long> {
-
+	public UserAccount findByUsername(String username);
 }

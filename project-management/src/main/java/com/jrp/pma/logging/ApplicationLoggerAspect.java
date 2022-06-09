@@ -1,7 +1,5 @@
 package com.jrp.pma.logging;
 
-import java.util.Arrays;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -40,22 +38,22 @@ public class ApplicationLoggerAspect {
 
 	@Around("definePackagePointcuts()")
 	public Object logAround(ProceedingJoinPoint joinPoint) {
-		logger.info("********** BEFORE **********");
-		logger.info(joinPoint.getSignature().getDeclaringTypeName());
-		logger.info(joinPoint.getSignature().getName());
-		logger.info(Arrays.toString(joinPoint.getArgs()));
+//		logger.info("********** BEFORE **********");
+//		logger.info(joinPoint.getSignature().getDeclaringTypeName());
+//		logger.info(joinPoint.getSignature().getName());
+//		logger.info(Arrays.toString(joinPoint.getArgs()));
 
 		Object result = null;
 		try {
 			result = joinPoint.proceed();
 		} catch (Throwable e) {
-			logger.equals(e);
+			logger.error(e.toString());
 		}
-		
-		logger.info("********** AFTER **********");
-		logger.info(joinPoint.getSignature().getDeclaringTypeName());
-		logger.info(joinPoint.getSignature().getName());
-		logger.info(Arrays.toString(joinPoint.getArgs()));
+
+//		logger.info("********** AFTER **********");
+//		logger.info(joinPoint.getSignature().getDeclaringTypeName());
+//		logger.info(joinPoint.getSignature().getName());
+//		logger.info(Arrays.toString(joinPoint.getArgs()));
 
 		return result;
 	}

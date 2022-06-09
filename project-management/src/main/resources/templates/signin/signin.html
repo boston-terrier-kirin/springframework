@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layouts::header"></head>
+<body>
+	<nav th:replace="layouts::navbar-default"></nav>
+	<div class="container">
+		<div class="row">
+			<form autocomplete="off" th:action="@{/signin/authenticateUser}" th:object="${userAccount}" method="post" class="form-signin" role="form">
+				<h3 class="form-signin-heading">Signin Form</h3>
+				<div class="form-group">
+					<input type="text" th:field="${userAccount.username}" placeholder="User Name" class="form-control mb-4" />
+				</div>
+				<div class="form-group">
+					<input type="password" th:field="${userAccount.password}" placeholder="Password" class="form-control mb-4" />
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-block">Signin</button>
+				</div>
+			</form>
+		</div>
+		
+		<p th:text="${_csrf.token}"></p>
+	</div>
+</body>
+</html>
