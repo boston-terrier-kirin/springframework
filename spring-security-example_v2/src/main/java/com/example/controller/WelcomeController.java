@@ -14,9 +14,9 @@ public class WelcomeController {
     @Autowired
     private CustomerUserDetailsService customerUserDetailsService;
 
-    @GetMapping("/")
-    public String hello() {
-        return "hello";
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "welcome";
     }
 
     @PostMapping("/signup")
@@ -25,6 +25,11 @@ public class WelcomeController {
        this.customerUserDetailsService.createUser(signupRequest);
 
         return "User Created";
+    }
+
+    @PostMapping("/hello")
+    public String hello() {
+        return "hello";
     }
 
 }

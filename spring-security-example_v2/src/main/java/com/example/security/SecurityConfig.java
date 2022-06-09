@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // ★忘れがち
         // csrfが効いているとPostmanでPOSTした時に403になってしまう。
         // SpringSecurityがdebugでログを出しているので、なかなか気づくのが大変。
-        http.csrf().disable();
+        http.csrf().ignoringAntMatchers("/signup");
 
         http.authorizeHttpRequests()
                 .mvcMatchers(HttpMethod.POST, "/signup").permitAll()

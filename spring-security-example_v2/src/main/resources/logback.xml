@@ -23,16 +23,16 @@
         </encoder>
     </appender>
 
-    <!--
+
     <logger name="org.springframework.security" level="DEBUG">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="APPLICATION_LOG" />
     </logger>
-    -->
 
+    <!--
     <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="APPLICATION_LOG" />
     </root>
-
+    -->
 </configuration>
