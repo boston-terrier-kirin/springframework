@@ -1,18 +1,23 @@
 # SpringSecurity
 
-# GET http://localhost:8080/welcome
-- デフォルトのログインページが表示される。UserDetailsServiceでログインを実装。
-
 # POST http://localhost:8080/signup
-- CSRFをdisabledにしているのでアクセス可能。
+
+- CSRF を disabled にしているのでアクセス可能。
+- BCryptPasswordEncoder を使って INSERT しているだけ。
 
 ```
 http.csrf().ignoringAntMatchers("/signup");
 ```
 
+# GET http://localhost:8080/welcome
+
+- デフォルトのログインページが表示される。UserDetailsService でログインを実装。
+- BCryptPasswordEncoder を@Bean しているので、DaoAuthenticationProvider が良い感じに処理してくれる。
+
 # POST http://localhost:8080/hello
-- CSRFが効いているのでアクセス不可。
-- CSRFエラーが発生した場合、SpringSecurityはデバッグでログを出すので要注意。
+
+- CSRF が効いているのでアクセス不可。
+- CSRF エラーが発生した場合、SpringSecurity はデバッグでログを出すので要注意。
 
 ```
 <logger name="org.springframework.security" level="DEBUG">
