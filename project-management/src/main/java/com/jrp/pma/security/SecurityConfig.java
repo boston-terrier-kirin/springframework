@@ -16,7 +16,8 @@ import com.jrp.pma.service.UserAccountService;
 
 @SuppressWarnings("deprecation")
 @Configuration
-@EnableWebSecurity
+// @EnableWebSecurity(debug = true)
+@EnableWebSecurity()
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -51,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 // authenticationProviderを独自で実装する場合
 //		auth.authenticationProvider(this.authProvider);
 
-		auth.userDetailsService(this.userAccountService).passwordEncoder(this.passwordEncoder);
+		auth.userDetailsService(this.userAccountService)
+			.passwordEncoder(this.passwordEncoder);
 	}
 	
 	@Override
