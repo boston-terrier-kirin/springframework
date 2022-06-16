@@ -1,4 +1,4 @@
-# SpringBatch 2022/6/7 バージョン
+# SpringBatch 2022/6/16 バージョン
 
 # 参考にしたサイト
 
@@ -19,8 +19,8 @@ http://localhost:8080/api/job/start/firstJob
 http://localhost:8080/api/job/start/secondJob
 
 - これで、Sample2Job が起動します。
-- firstJobとsecondJobの両方をキックした場合、それぞれで同実行1になります。
-- 同時実行の設定はJob単位で有効で、全Jobを通した同時実行制御の方法はまだ分かっていません。
+- firstJob と secondJob の両方をキックした場合、それぞれで同実行 1 になります。
+- 同時実行の設定は Job 単位で有効で、全 Job を通した同時実行制御の方法はまだ分かっていません。
 
 # h2-console
 
