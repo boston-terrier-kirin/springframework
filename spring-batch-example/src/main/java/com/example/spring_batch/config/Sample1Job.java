@@ -19,7 +19,7 @@ import com.example.spring_batch.listener.FirstStepListener;
 import com.example.spring_batch.service.FirstTasklet;
 
 @Configuration
-public class SampleJob {
+public class Sample1Job {
 	
 	@Autowired
 	private JobBuilderFactory jobBuilderFactory;

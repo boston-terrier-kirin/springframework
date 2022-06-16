@@ -12,9 +12,15 @@ SpringBatchApplication.java を実行する。
 
 http://localhost:8080/api/job/start/firstJob
 
-- これで、SampleJob が起動します。
+- これで、Sample1Job が起動します。
 - SampleJob は 30 秒スリープしています。非同期になれているっぽいので、ブラウザ側はすぐにレスポンスが返ってきます。
 - ブラウザから 2 回ジョブをキックした場合、30 秒後に 2 回目が実行されます。
+
+http://localhost:8080/api/job/start/secondJob
+
+- これで、Sample2Job が起動します。
+- firstJobとsecondJobの両方をキックした場合、それぞれで同実行1になります。
+- 同時実行の設定はJob単位で有効で、全Jobを通した同時実行制御の方法はまだ分かっていません。
 
 # h2-console
 

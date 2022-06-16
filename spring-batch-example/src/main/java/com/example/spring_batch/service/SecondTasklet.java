@@ -15,8 +15,8 @@ public class SecondTasklet implements Tasklet {
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-		logger.info("■SecondTasklet --- 10秒スリープ");
-		Thread.sleep(10000);
+		logger.info("　--- 20秒スリープ");
+		Thread.sleep(20000);
 		return RepeatStatus.FINISHED;
 	}
 
