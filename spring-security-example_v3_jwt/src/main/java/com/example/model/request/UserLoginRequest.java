@@ -1,6 +1,6 @@
 package com.example.model.request;
 
-public class UserLoginRequestModel {
+public class UserLoginRequest {
 
 	private String email;
 	private String password;

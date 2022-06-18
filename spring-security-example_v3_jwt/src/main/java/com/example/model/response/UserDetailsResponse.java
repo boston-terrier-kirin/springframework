@@ -1,6 +1,6 @@
 package com.example.model.response;
 
-public class UserDetailsResponseModel {
+public class UserDetailsResponse {
 
 	private String userId;
 	private String firstName;

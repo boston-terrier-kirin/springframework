@@ -1,6 +1,6 @@
 package com.example.model.request;
 
-public class UserDetailsRequestModel {
+public class UserDetailsRequest {
 
 	private String firstName;
 	private String lastName;

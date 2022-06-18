@@ -20,7 +20,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.model.request.UserLoginRequestModel;
+import com.example.model.request.UserLoginRequest;
 import com.example.service.UserService;
 import com.example.shared.SpringApplicationContext;
 import com.example.shared.dto.UserDto;
@@ -47,8 +47,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		logger.info("★attemptAuthentication");
 
 		try {
-			UserLoginRequestModel creds = new ObjectMapper().readValue(request.getInputStream(),
-					UserLoginRequestModel.class);
+			UserLoginRequest creds = new ObjectMapper().readValue(request.getInputStream(),
+					UserLoginRequest.class);
 
 			return this.authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));

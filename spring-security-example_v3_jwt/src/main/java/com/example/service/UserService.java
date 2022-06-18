@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -8,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,6 +35,32 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	public List<UserDto> getUsers(int page, int limit) {
+		Pageable pageable = PageRequest.of(page, limit);
+		Page<UserEntity> usersPage = this.userRepository.findAll(pageable);
+		List<UserEntity> users = usersPage.getContent();
+		
+		List<UserDto> returnValue = new ArrayList<>();
+		for (UserEntity userEntity : users) {
+			UserDto userDto = new UserDto();
+			BeanUtils.copyProperties(userEntity, userDto);
+			returnValue.add(userDto);
+		}
+
+		return returnValue;
+	}
+	
+	public UserDto getUserByUserId(String userId) {
+		UserEntity user = this.userRepository.findByUserId(userId);
+		if (user == null) {
+			throw new UsernameNotFoundException(userId);
+		}
+
+		UserDto returnValue = new UserDto();
+		BeanUtils.copyProperties(user, returnValue);
+		return returnValue;
+	}
+
 	@Transactional
 	public UserDto createUser(UserDto userDto) {
 
@@ -50,6 +80,34 @@ public class UserService implements UserDetailsService {
 		BeanUtils.copyProperties(createdUserEntity, returnValue);
 
 		return returnValue;
+	}
+
+	@Transactional
+	public UserDto updateUser(String userId, UserDto userDto) {
+		UserEntity userEntity = this.userRepository.findByUserId(userId);
+		if (userEntity == null) {
+			throw new UsernameNotFoundException(userId);
+		}
+
+		userEntity.setFirstName(userDto.getFirstName());
+		userEntity.setLastName(userDto.getLastName());
+
+		UserEntity updatedUserEntity = this.userRepository.save(userEntity);
+
+		UserDto returnValue = new UserDto();
+		BeanUtils.copyProperties(updatedUserEntity, returnValue);
+
+		return returnValue;
+	}
+
+	@Transactional
+	public void deleteUser(String userId) {
+		UserEntity userEntity = this.userRepository.findByUserId(userId);
+		if (userEntity == null) {
+			throw new UsernameNotFoundException(userId);
+		}
+
+		this.userRepository.delete(userEntity);
 	}
 
 	public UserDto getUser(String email) {
@@ -75,7 +133,6 @@ public class UserService implements UserDetailsService {
 			throw new UsernameNotFoundException(email);
 		}
 
-		// TODO
 		return new User(user.getEmail(), user.getEncryptedPassword(), new ArrayList<>());
 	}
 }
