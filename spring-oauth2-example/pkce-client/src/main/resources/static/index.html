@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>PKCE</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script>
+		function generateState(length) {
+			var stateValue = "";
+			var alphaNumericCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			var alphaNumericCharactersLength = alphaNumericCharacters.length;
+			for (var i = 0; i < length; i++) {
+				stateValue += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphaNumericCharactersLength));
+			}
+			document.getElementById("stateValue").innerHTML = stateValue;
+		}
+		
+		function generateCodeVerifier() {
+			var returnValue = "";
+			var randomByteArray = new Uint8Array(32);
+			window.crypto.getRandomValues(randomByteArray);
+			returnValue = base64urlencode(randomByteArray);
+			document.getElementById("codeVerifierValue").innerHTML = returnValue;
+		}
+
+		function base64urlencode(sourceValue) {
+			var stringValue = String.fromCharCode.apply(null, sourceValue);
+			var base64Encoded = btoa(stringValue);
+			var base64urlEncoded = base64Encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+			return base64urlEncoded;
+		}
+
+		async function generateCodeChallenge() {
+			var codeChallengeValue = "";
+			var codeVerifier = document.getElementById("codeVerifierValue").innerHTML;
+			var textEncoder = new TextEncoder('US-ASCII');
+			var encodedValue = textEncoder.encode(codeVerifier);
+			var digest = await window.crypto.subtle.digest("SHA-256", encodedValue);
+	
+			codeChallengeValue = base64urlencode(Array.from(new Uint8Array(digest)));
+			document.getElementById("codeChallengeValue").innerHTML = codeChallengeValue;
+		}
+
+		function getAuthCode() {
+			var state = document.getElementById("stateValue").innerHTML;
+			var codeChallenge = document.getElementById("codeChallengeValue").innerHTML;
+	
+			var authorizationURL = "http://localhost:8080/realms/appsdeveloperblog/protocol/openid-connect/auth";
+			authorizationURL += "?client_id=photo-app-pkce-client";
+			authorizationURL += "&response_type=code";
+			authorizationURL += "&scope=openid";
+			authorizationURL += "&redirect_uri=http://localhost:8181/authcodeReader.html";
+			authorizationURL += "&state=" + state;
+			authorizationURL += "&code_challenge=" + codeChallenge;
+			authorizationURL += "&code_challenge_method=S256";
+	
+			window.open(authorizationURL, 'authorizationRequestWindow', 'width=800,height=600,left=200,top=200');
+		}
+
+		// Keycloakからの戻り
+		function postAuthorize(state, authCode) {
+			var originalStateValue = document.getElementById("stateValue").innerHTML;
+	
+			if (state === originalStateValue) {
+				requestTokens(authCode);
+			} else {
+				alert("Invalid state value received");
+			}
+		}
+	
+		function requestTokens(authCode) {
+			var codeVerifier = document.getElementById("codeVerifierValue").innerHTML;
+			var data = {
+				"grant_type": "authorization_code",
+				"client_id": "photo-app-pkce-client",
+				"code": authCode,
+				"code_verifier": codeVerifier,
+				"redirect_uri": "http://localhost:8181/authcodeReader.html"
+			};
+	
+			$.ajax({
+				beforeSend: function (request) {
+					request.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+				},
+				type: "POST",
+				url: "http://localhost:8080/realms/appsdeveloperblog/protocol/openid-connect/token",
+				data: data,
+				success: postRequestAccessToken,
+				dataType: "json"
+			});
+		}
+
+		function postRequestAccessToken(data, status, jqXHR) {
+			document.getElementById("accessToken").innerHTML = data["access_token"];
+		}
+
+		function getInfoFromResourceServer() {
+			var accessToken = document.getElementById("accessToken").innerHTML;
+
+			$.ajax({
+				beforeSend: function (request) {
+					request.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+					request.setRequestHeader("Authorization", "Bearer " + accessToken);
+				},
+				type: "GET",
+				url: "http://localhost:8082/users/status/check",
+				success: postInfoFromAccessToken,
+				dataType: "text"
+			});
+		}
+
+		function postInfoFromAccessToken(data, status, jqXHR) {
+			alert(data);
+		}
+	</script>
+</head>
+<body>
+	<h1>Welcome - PKCE Client</h1>
+	<div id="stateValue"></div>
+	<div><input type="button" value="Generate State Value" onclick="generateState(30)" /></div>
+	
+	<div id="codeVerifierValue"></div>
+	<div><input type="button" value="Generate Code Verifier value" onclick="generateCodeVerifier()"/></div>
+
+	<div id="codeChallengeValue"></div>
+	<div><input type="button" value="Generate Code Challenge value" onclick="generateCodeChallenge()"/></div>
+	
+	<div><input type="button" value="Get Auth Code" onclick="getAuthCode()"/></div>
+	
+	<div>Access token: <span id="accessToken"></span></div>
+	
+	<div><input type="button" value="Load" onclick="getInfoFromResourceServer()"/></div>
+</body>
+</html>

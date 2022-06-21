@@ -20,3 +20,9 @@
 - http://localhost:8088
 - web-client と同じく、OAuth2 クライアントになっている。
 - web-client 側でログインすれば、web-client-02 は SSO が効く。
+
+# pkce-client
+
+- http://localhost:8181
+- web-client と同じく、OAuth2 クライアントになっている。
+- SPA を模して、PKCE をやっている。
