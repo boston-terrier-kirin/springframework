@@ -9,6 +9,7 @@ public class Main {
     public static void main(String[] args) {
         log.info("Hello");
         log.debug("Debug");
+        log.warn("Warn");
         log.error("Error");
     }
 }
