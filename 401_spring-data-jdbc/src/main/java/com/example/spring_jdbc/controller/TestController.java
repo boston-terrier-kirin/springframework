@@ -1,7 +1,6 @@
 package com.example.spring_jdbc.controller;
 
 import com.example.spring_jdbc.entity.Test;
-import com.example.spring_jdbc.repository.Test2Repository;
 import com.example.spring_jdbc.repository.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * https://speakerdeck.com/rshindo/jsug-2019-01
  * spring-boot-starter-data-jdbc
  *   と
  * spring-boot-starter-jdbc
@@ -23,15 +23,10 @@ public class TestController {
     @Autowired
     TestRepository testRepository;
 
-    @Autowired
-    Test2Repository test2Repository;
-
     @GetMapping("/test1")
     public String test1() {
-        {
-            Test test = createTest();
-            testRepository.saveTest(test);
-        }
+        Test test = createTest();
+        testRepository.saveTest(test);
 
         System.out.println("💨💨💨💨💨 TEST1");
 
@@ -43,10 +38,8 @@ public class TestController {
 
     @GetMapping("/test2")
     public String test2() {
-        {
-            Test test = createTest();
-            testRepository.saveTest(test);
-        }
+        Test test = createTest();
+        testRepository.saveTest(test);
 
         System.out.println("💨💨💨💨💨 TEST2");
 
@@ -130,7 +123,7 @@ public class TestController {
         Test test = createTest();
         System.out.println("TEST101.test: " + test);
 
-        Test savedTest = test2Repository.save(test);
+        Test savedTest = testRepository.save(test);
         System.out.println("TEST101.savedTest: " + savedTest);
 
         // testとsavedTestは同じオブジェクトになってしまう。
