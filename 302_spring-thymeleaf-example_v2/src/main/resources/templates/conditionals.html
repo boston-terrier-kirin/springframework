@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Conditionals</title>
+</head>
+<body>
+  <p th:if="${sales > 50}">Sales are good!</p>
+  <p th:unless="${sales > 50}">Sales are bad!</p>
+
+  <p th:text="${sales > 50} ? 'Sales are good!!' : 'Sales are bad!!'"></p>
+
+</body>
+</html>
