@@ -15,8 +15,6 @@ public class GradeService {
     @Autowired
     private GradeRepository gradeRepository;
 
-    private List<Grade> grades = new ArrayList<>();
-
     public List<Grade> getGrades() {
         return this.gradeRepository.getGrades();
     }

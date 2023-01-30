@@ -21,8 +21,8 @@ public class Grade {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Grade(String id, String name, String subject, String score) {
-        this.id = id;
+    public Grade(String name, String subject, String score) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.subject = subject;
         this.score = score;
