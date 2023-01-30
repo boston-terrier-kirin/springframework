@@ -15,8 +15,13 @@
     <h2> Grade Portal </h2>
     <form method="post" th:object="${grade}" th:action="@{/grades/save}">
         <input type="hidden" th:field="${grade.id}">
+        <p style="color:red" th:errors="*{name}"></p>
         <input type="text" placeholder="Name" th:field="${grade.name}">
+
+        <p style="color:red" th:errors="*{score}"></p>
         <input type="text" placeholder="Score" th:field="${grade.score}">
+
+        <p style="color:red" th:errors="*{subject}"></p>
         <input type="text" placeholder="Subject"  th:field="${grade.subject}">
         <br><br>
         <input type="submit" value="Submit">
