@@ -59,6 +59,14 @@ public class SecurityConfig {
                             .password(passwordEncoder.encode("test"))
                             .roles("USER").build();
 
+        /**
+         * JdbcUserDetailsManager
+         *   ↓
+         * UserDetailsManager
+         *   ↓
+         * UserDetailsService
+         */
+
         var jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
         jdbcUserDetailsManager.createUser(kirin);
         jdbcUserDetailsManager.createUser(kuroro);
