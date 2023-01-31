@@ -21,6 +21,8 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        System.out.println("★CustomAuthenticationManager.authenticate");
+
         User user = userService.getUser(authentication.getName());
         if (!passwordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {
             System.out.println("Bad Password");

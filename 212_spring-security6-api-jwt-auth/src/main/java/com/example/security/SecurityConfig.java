@@ -3,6 +3,7 @@ package com.example.security;
 
 import com.example.security.filter.AuthenticationFilter;
 import com.example.security.filter.ExceptionHandlerFilter;
+import com.example.security.filter.JWTAuthorizationFilter;
 import com.example.security.manager.CustomAuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +43,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
 
         http.addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
-                .addFilter(authenticationFilter);
+                .addFilter(authenticationFilter)
+                .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class);
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

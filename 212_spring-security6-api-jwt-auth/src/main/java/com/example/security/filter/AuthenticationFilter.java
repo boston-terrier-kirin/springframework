@@ -1,13 +1,14 @@
 package com.example.security.filter;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.example.entity.User;
-import com.example.security.manager.CustomAuthenticationManager;
+import com.example.security.SecurityConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 
 /**
@@ -39,12 +42,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        System.out.println("★AuthenticationFilter.attemptAuthentication");
+
         try {
             User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
-            System.out.println(user.getUsername());
-            System.out.println(user.getPassword());
-            System.out.println(authenticationManager);
-
             Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
             return authenticationManager.authenticate(authentication);
         } catch (IOException e) {
@@ -58,12 +59,20 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
 
-        System.out.println("★successfulAuthentication");
+        System.out.println("★AuthenticationFilter.successfulAuthentication");
+
+        String token = JWT.create()
+                .withSubject(auth.getName())
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
+                .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
+
+        response.addHeader(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + token);
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        System.out.println("★unsuccessfulAuthentication");
+        System.out.println("★AuthenticationFilter.unsuccessfulAuthentication");
+
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(failed.getMessage());
         response.getWriter().flush();
