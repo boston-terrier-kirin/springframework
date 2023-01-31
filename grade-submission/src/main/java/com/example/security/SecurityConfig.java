@@ -3,6 +3,8 @@ package com.example.security;
 
 import com.example.security.filter.AuthenticationFilter;
 import com.example.security.filter.ExceptionHandlerFilter;
+import com.example.security.manager.CustomAuthenticationManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,13 +19,16 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class SecurityConfig {
 
+    @Autowired
+    private CustomAuthenticationManager authenticationManager;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         /**
          * AuthenticationFilterの親であるUsernamePasswordAuthenticationFilterが、/loginをデフォルトでセットしているので、
          * /authenticateに変える。
          */
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager);
         authenticationFilter.setFilterProcessesUrl("/authenticate");
 
         // h2がframeを使っている。
