@@ -31,6 +31,10 @@ public class SecurityConfig {
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        /**
+         * AppConfigで定義。
+         * DaoAuthenticationProvider -> UserDetailsService
+         */
         http.authenticationProvider(authenticationProvider);
 
         /**
@@ -38,7 +42,6 @@ public class SecurityConfig {
          *     OR
          * ・UsernamePasswordAuthenticationFilterより前でauthenticateする。
          */
-
         /**
          * UsernamePasswordAuthenticationFilterは/loginなど、決まったURLでしか動かない。
          * JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter でjwtを発行してしまうと、
