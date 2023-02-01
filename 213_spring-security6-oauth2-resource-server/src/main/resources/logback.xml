@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="logFilePath" value="./" />
+    <property name="logFileName" value="app" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][%-5level] %logger{140} - %message%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="APPLICATION_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}${logFileName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}${logFileName}-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][%-5level] %logger{40} - %message%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="org.springframework.security" level="TRACE">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="APPLICATION_LOG" />
+    </logger>
+
+<!--
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="APPLICATION_LOG" />
+    </root>
+-->
+
+</configuration>
