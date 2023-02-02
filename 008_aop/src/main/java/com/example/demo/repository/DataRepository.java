@@ -1,11 +1,11 @@
-package com.example.demo.aop;
+package com.example.demo.repository;
 
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DataService1 {
+public class DataRepository {
 
     public List<Integer> getData() {
         return List.of(

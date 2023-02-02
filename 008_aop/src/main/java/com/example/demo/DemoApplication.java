@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.aop.BusinessService1;
+import com.example.demo.service.BusinessService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ public class DemoApplication implements CommandLineRunner {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	private BusinessService1 businessService1;
+	private BusinessService businessService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -21,8 +21,12 @@ public class DemoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		logger.info("START");
-		logger.info("MAX: " + businessService1.calculateMax());
-		logger.info("END");
+		logger.info("MAX: " + businessService.calculateMax());
+		logger.info("-----");
+
+		try {
+			businessService.exception();
+		} catch (Exception e) {
+		}
 	}
 }

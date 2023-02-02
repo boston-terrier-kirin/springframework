@@ -1,6 +1,7 @@
 # Actuator
-application.propertiesに、management.endpoints.web.exposure.include=* を設定する。<br>
-management.endpoints.web.exposure.include=metrics にすれば、metricsだけをGETできる。
+
+application.properties に、management.endpoints.web.exposure.include=\* を設定する。<br>
+management.endpoints.web.exposure.include=metrics にすれば、metrics だけを GET できる。
 
 ```
 management.endpoints.web.exposure.include=metrics
@@ -10,14 +11,16 @@ management.endpoints.web.exposure.include=metrics
 - http://localhost:8080/actuator/metrics
 - http://localhost:8080/actuator/metrics/jvm.memory.max
 
-# profile
-application-dev.properties, application-prd.properties を用意して、application.propertiesにprofileを定義する。
+# Profile
+
+application-dev.properties, application-prd.properties を用意して、application.properties に profile を定義する。
 
 ```
 spring.profiles.active=prd
 ```
 
 # ConfigurationProperties
+
 CurrencyServiceConfig.java
 
 ```
