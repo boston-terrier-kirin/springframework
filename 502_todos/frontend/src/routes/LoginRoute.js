@@ -1,18 +1,22 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
 import Heading from '../components/Heading';
 import Message from '../components/Message';
+import AuthContext from '../context/AuthContext';
 
 const LoginRoute = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
+
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (username === 'kirin' && password === 'test') {
+      login('kirin');
       navigate('/home');
       return;
     }
