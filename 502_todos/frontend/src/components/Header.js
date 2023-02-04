@@ -1,4 +1,3 @@
-import { computeHeadingLevel } from '@testing-library/react';
 import React from 'react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';

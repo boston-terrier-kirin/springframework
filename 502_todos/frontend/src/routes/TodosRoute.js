@@ -1,29 +1,33 @@
-import React from 'react';
-import Header from '../components/Header';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import todosSerive from '../api/todosService';
 import Heading from '../components/Heading';
-
-const todos = [
-  {
-    id: 1,
-    description: 'Learn AWS',
-    done: false,
-    targetDate: '2023/2/28',
-  },
-  {
-    id: 2,
-    description: 'Learn Docker',
-    done: false,
-    targetDate: '2023/4/30',
-  },
-  {
-    id: 3,
-    description: 'Learn Spring Boot',
-    done: false,
-    targetDate: '2023/2/10',
-  },
-];
+import AuthContext from '../context/AuthContext';
 
 const TodosRoute = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    const getAllTodos = async () => {
+      const data = await todosSerive.getAllTodos(user.username);
+      setTodos(data);
+    };
+
+    getAllTodos();
+  }, [user.username]);
+
+  const deleteTodo = async (id) => {
+    await todosSerive.deleteTodo(user.username, id);
+    const updatedTodos = todos.filter((t) => t.id !== id);
+    setTodos(updatedTodos);
+  };
+
+  const updateTodo = (id) => {
+    navigate(`/todos/${id}`);
+  };
+
   const todosToRender = todos.map((todo) => {
     return (
       <tr key={todo.id}>
@@ -31,6 +35,22 @@ const TodosRoute = () => {
         <td>{todo.description}</td>
         <td>{todo.done.toString()}</td>
         <td>{todo.targetDate}</td>
+        <td>
+          <button
+            onClick={() => deleteTodo(todo.id)}
+            className="btn btn-danger"
+          >
+            Delete
+          </button>
+        </td>
+        <td>
+          <button
+            onClick={() => updateTodo(todo.id)}
+            className="btn btn-primary"
+          >
+            Update
+          </button>
+        </td>
       </tr>
     );
   });
@@ -46,6 +66,8 @@ const TodosRoute = () => {
             <th>Description</th>
             <th>Done?</th>
             <th>Target Date</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>{todosToRender}</tbody>

@@ -8,6 +8,7 @@ import RootRoute from './routes/RootRoute';
 import { AuthProvider } from './context/AuthContext';
 import LogoutRoute from './routes/LogoutRoute';
 import PrivateRoute from './routes/AuthenticatedRoute';
+import TodoRoute from './routes/TodoRoute';
 
 const App = () => {
   return (
@@ -23,6 +24,9 @@ const App = () => {
             </Route>
             <Route path="/todos" element={<PrivateRoute />}>
               <Route path="/todos" element={<TodosRoute />} />
+            </Route>
+            <Route path="/todos/:id" element={<PrivateRoute />}>
+              <Route path="/todos/:id" element={<TodoRoute />} />
             </Route>
             <Route path="*" element={<NotFoundRoute />} />
           </Route>
