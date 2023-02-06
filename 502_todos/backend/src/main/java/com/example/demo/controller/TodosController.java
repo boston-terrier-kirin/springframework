@@ -27,6 +27,12 @@ public class TodosController {
         return new ResponseEntity(todosService.findById(id), HttpStatus.OK );
     }
 
+    @PostMapping("/{username}/todos")
+    public ResponseEntity<TodoResponse> addTodo(@PathVariable String username, @RequestBody TodoRequest todoRequest) {
+        System.out.println(todoRequest);
+        return new ResponseEntity(todosService.addTodo(todoRequest.getUsername(), todoRequest.getDescription(), todoRequest.getTargetDate(), todoRequest.isDone()), HttpStatus.CREATED );
+    }
+
     @DeleteMapping("/{username}/todos/{id}")
     public ResponseEntity<HttpStatus> deleteTodo(@PathVariable String username, @PathVariable Long id) {
         todosService.deleteById(id);

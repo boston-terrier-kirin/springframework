@@ -1,13 +1,14 @@
 import { useFormik } from 'formik';
 import { useContext, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import todosSerive from '../api/todosService';
+import { useNavigate, useParams } from 'react-router-dom';
+import todoService from '../api/todosService';
 import Heading from '../components/Heading';
 import AuthContext from '../context/AuthContext';
 
 const TodoRoute = () => {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const form = useFormik({
     initialValues: {
@@ -15,21 +16,27 @@ const TodoRoute = () => {
       targetDate: '',
       done: false,
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
       const todo = {
         ...values,
         id,
         username: user.username,
       };
-      todosSerive.updateTodo(user.username, id, todo);
+
+      if (id) {
+        await todoService.updateTodo(user.username, id, todo);
+      } else {
+        await todoService.addTodo(user.username, todo);
+      }
+
+      navigate('/todos');
     },
   });
 
   useEffect(
     () => {
       const getTodo = async (id) => {
-        const todo = await todosSerive.getTodo(user.username, id);
+        const todo = await todoService.getTodo(user.username, id);
 
         form.setValues({
           description: todo.description,
@@ -38,7 +45,9 @@ const TodoRoute = () => {
         });
       };
 
-      getTodo(id);
+      if (id) {
+        getTodo(id);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [id, user.username]
@@ -46,7 +55,7 @@ const TodoRoute = () => {
 
   return (
     <div>
-      <Heading>Update Todo</Heading>
+      {id ? <Heading>Update Todo</Heading> : <Heading>Add Todo</Heading>}
 
       <form onSubmit={form.handleSubmit}>
         <div className="mb-3">

@@ -13,18 +13,4 @@ public class TodoApplication {
 		SpringApplication.run(TodoApplication.class, args);
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry
-						.addMapping("/**")
-						.allowedMethods("*")
-						.allowedHeaders("*")
-						.allowedOrigins("http://localhost:3000");
-			}
-		};
-	}
-
 }

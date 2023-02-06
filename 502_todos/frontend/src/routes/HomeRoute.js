@@ -8,7 +8,7 @@ const HomeRoute = () => {
   const [test, setTest] = useState('');
 
   const handleTest = async () => {
-    const data = await todosSerive.healthCheck('/test');
+    const data = await todosSerive.healthCheck();
     console.log(data);
     setTest(data);
   };

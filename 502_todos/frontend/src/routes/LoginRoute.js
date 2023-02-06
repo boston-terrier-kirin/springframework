@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
+import authService from '../api/authService';
 import Heading from '../components/Heading';
 import Message from '../components/Message';
 import AuthContext from '../context/AuthContext';
@@ -12,16 +13,16 @@ const LoginRoute = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (username === 'kirin' && password === 'test') {
-      login('kirin');
+    try {
+      const token = await authService.basicAuth(username, password);
+      login(username, token);
       navigate('/home');
-      return;
+    } catch (err) {
+      setError(true);
     }
-
-    setError(true);
   };
 
   return (

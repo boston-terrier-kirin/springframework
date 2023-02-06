@@ -1,40 +1,42 @@
-import axios from 'axios';
-
-const api = axios.create({
-  baseURL: 'http://localhost:8080',
-});
+import apiClient from './apiClient';
 
 const healthCheck = async () => {
-  const res = await api.get('/test');
+  const res = await apiClient.get('/test');
   return res.data;
 };
 
 const getAllTodos = async (username) => {
-  const res = await api.get(`/users/${username}/todos`);
+  const res = await apiClient.get(`/users/${username}/todos`);
   return res.data;
 };
 
 const getTodo = async (username, id) => {
-  const res = await api.get(`/users/${username}/todos/${id}`);
+  const res = await apiClient.get(`/users/${username}/todos/${id}`);
+  return res.data;
+};
+
+const addTodo = async (username, todo) => {
+  const res = await apiClient.post(`/users/${username}/todos`, todo);
   return res.data;
 };
 
 const updateTodo = async (username, id, todo) => {
-  const res = await api.put(`/users/${username}/todos/${id}`, todo);
+  const res = await apiClient.put(`/users/${username}/todos/${id}`, todo);
   return res.data;
 };
 
 const deleteTodo = async (username, id) => {
-  const res = await api.delete(`/users/${username}/todos/${id}`);
+  const res = await apiClient.delete(`/users/${username}/todos/${id}`);
   return res.data;
 };
 
-const todosSerive = {
+const todoService = {
   healthCheck,
   getAllTodos,
   getTodo,
+  addTodo,
   updateTodo,
   deleteTodo,
 };
 
-export default todosSerive;
+export default todoService;

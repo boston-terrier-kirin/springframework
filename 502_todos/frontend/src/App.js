@@ -25,8 +25,11 @@ const App = () => {
             <Route path="/todos" element={<PrivateRoute />}>
               <Route path="/todos" element={<TodosRoute />} />
             </Route>
-            <Route path="/todos/:id" element={<PrivateRoute />}>
-              <Route path="/todos/:id" element={<TodoRoute />} />
+            <Route path="/todo/:id" element={<PrivateRoute />}>
+              <Route path="/todo/:id" element={<TodoRoute />} />
+            </Route>
+            <Route path="/todo" element={<PrivateRoute />}>
+              <Route path="/todo" element={<TodoRoute />} />
             </Route>
             <Route path="*" element={<NotFoundRoute />} />
           </Route>

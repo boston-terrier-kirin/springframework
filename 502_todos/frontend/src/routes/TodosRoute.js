@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import todosSerive from '../api/todosService';
+import { Link } from 'react-router-dom';
+import todoService from '../api/todosService';
 import Heading from '../components/Heading';
 import AuthContext from '../context/AuthContext';
 
@@ -11,7 +12,7 @@ const TodosRoute = () => {
 
   useEffect(() => {
     const getAllTodos = async () => {
-      const data = await todosSerive.getAllTodos(user.username);
+      const data = await todoService.getAllTodos(user.username);
       setTodos(data);
     };
 
@@ -19,13 +20,13 @@ const TodosRoute = () => {
   }, [user.username]);
 
   const deleteTodo = async (id) => {
-    await todosSerive.deleteTodo(user.username, id);
+    await todoService.deleteTodo(user.username, id);
     const updatedTodos = todos.filter((t) => t.id !== id);
     setTodos(updatedTodos);
   };
 
   const updateTodo = (id) => {
-    navigate(`/todos/${id}`);
+    navigate(`/todo/${id}`);
   };
 
   const todosToRender = todos.map((todo) => {
@@ -58,6 +59,10 @@ const TodosRoute = () => {
   return (
     <>
       <Heading>Things you want to do</Heading>
+
+      <Link to="/todo" className="btn btn-primary mb-3">
+        Add a New Task
+      </Link>
 
       <table className="table">
         <thead>

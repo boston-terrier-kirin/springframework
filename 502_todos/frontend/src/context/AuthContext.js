@@ -4,13 +4,13 @@ import authReducer from './AuthReducer';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const initialState = { username: null, isAuthenticated: false };
+  const initialState = { username: null, token: null, isAuthenticated: false };
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  const login = (username, password) => {
+  const login = (username, token) => {
     dispatch({
       type: 'LOGIN',
-      payload: { username, password },
+      payload: { username, token },
     });
   };
 

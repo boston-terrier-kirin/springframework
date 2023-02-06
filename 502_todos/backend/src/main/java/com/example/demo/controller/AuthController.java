@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class TestController {
-    @GetMapping(path = "/test")
-    public String helloWorld() {
+public class AuthController {
+
+    @PostMapping(path = "/basicAuth")
+    public String basicAuth() {
         return "Welcome";
     }
 }
