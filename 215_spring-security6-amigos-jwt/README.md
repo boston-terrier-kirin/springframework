@@ -27,7 +27,7 @@ register したあとに、login しなおす必要がない。
 
 ## 方式 2
 
-この方式は、login のタイミングで市から jwt を返せない。
+この方式は、login のタイミングでしか jwt を返せない。
 
 - UsernamePasswordAuthenticationFilter で jwt をつける。
 - JwtAuthorizationFilter で jwt をチェック
