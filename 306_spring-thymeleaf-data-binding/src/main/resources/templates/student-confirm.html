@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div>
+        First Name: <span th:text="${student.firstName}" />
+    </div>
+    <div>
+        Last Name: <span th:text="${student.lastName}" />
+    </div>
+    <div>
+        Country: <span th:text="${student.country}" />
+    </div>
+    <div>
+        Favorite Programming Language: <span th:text="${student.favoriteLanguage}" />
+    </div>
+    <div>
+        Favorite Operating Systems:
+        <ul>
+            <li th:each="os : ${student.favoriteOs}" th:value="${os}" th:text="${os}" />
+        </ul>
+    </div>
+</body>
+</html>

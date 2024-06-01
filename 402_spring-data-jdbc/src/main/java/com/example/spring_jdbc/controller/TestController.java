@@ -23,6 +23,16 @@ public class TestController {
     @Autowired
     TestRepository testRepository;
 
+    @GetMapping("/testEvent")
+    public String testEvent() {
+        Test test = createTest();
+
+        // デフォルトのsaveを使うと、JdbcConfigにセットしたApplicationListenerが動く
+        testRepository.save(test);
+
+        return "test.html";
+    }
+
     @GetMapping("/test1")
     public String test1() {
         Test test = createTest();
