@@ -36,6 +36,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Employee findByEmail(String email) {
+        Optional<Employee> result = this.employeeRepository.findByEmail(email);
+
+        if (result.isPresent()) {
+            return result.get();
+        }
+
+        throw new RuntimeException("Employee email not found: " + email);
+    }
+
+    @Override
     public Employee save(Employee employee) {
         return this.employeeRepository.save(employee);
     }

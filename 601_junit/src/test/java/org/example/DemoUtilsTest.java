@@ -2,6 +2,7 @@ package org.example;
 
 import org.junit.jupiter.api.*;
 
+import java.time.Duration;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -77,5 +78,21 @@ public class DemoUtilsTest {
     void linesMatch() {
         List<String> list = List.of("luv", "2", "code");
         assertLinesMatch(list, demoUtils.getAcademyInList());
+    }
+
+    @Test
+    void throws_doesNotThrow() {
+        assertThrows(Exception.class, ()-> demoUtils.throwException(-1));
+        assertDoesNotThrow(()-> demoUtils.throwException(1));
+    }
+
+    @Test
+    void timeout() {
+        assertTimeoutPreemptively(Duration.ofSeconds(3), ()-> demoUtils.checkTimeout());
+    }
+
+    @Test
+    void equals() {
+        assertEquals(20, demoUtils.multiply(4, 5));
     }
 }
