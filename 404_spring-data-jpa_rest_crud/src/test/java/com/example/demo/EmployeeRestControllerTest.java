@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.entity.Employee;
+import com.example.demo.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,9 @@ class EmployeeRestControllerTest {
 	private ObjectMapper mapper;
 
 	private static final MediaType APPLICATION_JSON = MediaType.APPLICATION_JSON;
+
+	@Autowired
+	private EmployeeService employeeService;
 
 	@BeforeAll
 	static void beforeAll() {
@@ -87,6 +91,19 @@ class EmployeeRestControllerTest {
 		assertEquals(created.getLastName(), "Doe");
 		assertEquals(created.getEmail(), "john@test.com");
 	}
+	@Test
+	void testGetEmployeeNotFound() throws Exception {
+		// MockReq
+		MockHttpServletRequestBuilder builders =
+				MockMvcRequestBuilders.get("/api/employees/99");
+
+		try {
+			MvcResult mvcResult = this.mockMvc.perform(builders)
+												.andReturn();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
 	@Test
 	void testAddEmployee() throws Exception {
@@ -109,6 +126,52 @@ class EmployeeRestControllerTest {
 		assertEquals(employee.getFirstName(), created.getFirstName());
 		assertEquals(employee.getLastName(), created.getLastName());
 		assertEquals(employee.getEmail(), created.getEmail());
+	}
+
+	@Sql("/test_employee.sql")
+	@Test
+	void testUpdateEmployee() throws Exception {
+		Employee employee = this.employeeService.findById(11);
+		employee.setFirstName("Steph");
+		employee.setLastName("Curry");
+		employee.setEmail("steph@test.com");
+
+		// MockReq
+		MockHttpServletRequestBuilder builders =
+				MockMvcRequestBuilders.post("/api/employees")
+						.contentType(APPLICATION_JSON)
+						.content(this.mapper.writeValueAsString(employee));
+
+		MvcResult mvcResult = this.mockMvc.perform(builders)
+				.andExpect(status().isOk())
+				.andReturn();
+		MockHttpServletResponse res = mvcResult.getResponse();
+
+		Employee created = this.mapper.readValue(res.getContentAsString(), Employee.class);
+		System.out.println(created);
+
+		assertEquals(created.getFirstName(), employee.getFirstName());
+		assertEquals(created.getLastName(), employee.getLastName());
+		assertEquals(created.getEmail(), employee.getEmail());
+	}
+
+	@Sql("/test_employee.sql")
+	@Test
+	void testDeleteEmployee() throws Exception {
+		// MockReq
+		MockHttpServletRequestBuilder builders =
+				MockMvcRequestBuilders.delete("/api/employees/11")
+										.contentType(APPLICATION_JSON);
+
+		MvcResult mvcResult = this.mockMvc.perform(builders)
+											.andExpect(status().isOk())
+											.andReturn();
+
+		try {
+			Employee employee = this.employeeService.findById(11);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }
