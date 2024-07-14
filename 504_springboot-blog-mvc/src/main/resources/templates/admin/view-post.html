@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/header :: header}"></head>
+<body>
+    <nav th:replace="~{admin/navbar :: navbar(active = 'Posts')}"></nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h2 th:text="${postDto.title}"></h2>
+                <hr />
+                <h4 class="mb-3" th:text="${postDto.shortDescription}"></h4>
+                <p th:utext="${postDto.content}"></p>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{admin/footer :: footer}"></footer>
+</body>
+</html>

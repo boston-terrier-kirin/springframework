@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{blog/header :: header}"></head>
+<body>
+    <nav th:replace="~{blog/navbar :: navbar('All Posts')}"></nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-3" th:each="postDto : ${postDtoList}">
+                    <div class="card-header">
+                        <h3>
+                            <a th:href="@{/post/{postUrl}(postUrl=${postDto.url})}" th:text="${postDto.title}"></a>
+                        </h3>
+                        <div>
+                            <strong th:text="${#temporals.format(postDto.createdOn, 'yyyy/MM/dd HH:mm')}"></strong>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span th:text="${postDto.shortDescription}"></span>
+                        <a th:href="@{/post/{postUrl}(postUrl=${postDto.url})}">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div th:replace="~{blog/search :: search}"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{blog/footer :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{blog/header :: header}"></head>
+<body>
+<nav th:replace="~{blog/navbar :: navbar('All Posts')}"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <h2 th:text="${postDto.title}"></h2>
+            <hr />
+            <h4 class="mb-3" th:text="${postDto.shortDescription}"></h4>
+            <p th:utext="${postDto.content}"></p>
+
+            <div class="mb-3">
+                <h3>Comments:</h3>
+                <div class="card mb-2" th:each="commentDto : ${postDto.comments}">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${commentDto.name + ' / ' + commentDto.email}"></h5>
+                        <span class="card-subtitle" th:text="${#temporals.format(commentDto.createdOn, 'yyyy/MM/dd HH:mm')}"></span>
+                        <p class="card-text" th:text="${commentDto.content}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Leave a comment</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" th:action="@{/{postUrl}/comments(postUrl=${postDto.url})}" th:object="${commentDto}">
+                        <div class="mb-2">
+                            <input class="form-control" type="text" id="name" name="name" placeholder="Enter name"
+                                   th:field="*{name}" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                        </div>
+
+                        <div class="mb-2">
+                            <input class="form-control" type="text" id="email" name="email" placeholder="Enter email"
+                                   th:field="*{email}" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                        </div>
+
+                        <div class="mb-2">
+                            <textarea class="form-control" type="text" id="content" name="content" placeholder="Enter comment" rows="4"
+                                      th:field="*{content}"></textarea>
+                            <p class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div th:replace="~{blog/search :: search}"></div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{blog/footer :: footer}"></footer>
+</body>
+</html>

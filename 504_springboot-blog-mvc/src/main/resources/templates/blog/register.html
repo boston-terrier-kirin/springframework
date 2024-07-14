@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{blog/header :: header}"></head>
+<body>
+    <nav th:replace="~{blog/navbar :: navbar(active = 'Register')}"></nav>
+
+    <div class="container">
+        <div class="row col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Registration</h2>
+                </div>
+
+                <div class="alert alert-info mt-3" th:if="${param.success}">
+                    You have registered successfully to our Blog app.
+                </div>
+
+                <div class="card-body">
+                    <form method="post" th:action="@{/register/save}" th:object="${userDto}">
+                        <div class="mb-3">
+                            <label class="form-label">First Name</label>
+                            <input class="form-control" type="text" id="firstName" name="title" placeholder="Enter first name"
+                                   th:field="*{firstName}" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Last Name</label>
+                            <input class="form-control" type="text" id="title" name="title" placeholder="Enter last name"
+                                   th:field="*{lastName}" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input class="form-control" type="text" id="email" name="title" placeholder="Enter email"
+                                   th:field="*{email}" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input class="form-control" type="password" id="password" name="title" placeholder="Enter password"
+                                   th:field="*{password}" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{blog/footer :: footer}"></footer>
+</body>
+</html>

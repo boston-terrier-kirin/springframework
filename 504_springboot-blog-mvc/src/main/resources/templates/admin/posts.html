@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/header :: header}"></head>
+<body>
+    <nav th:replace="~{admin/navbar :: navbar(active='Posts')}"></nav>
+
+    <div class="container">
+        <div class="row">
+            <h1>List Blog Posts</h1>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-5">
+                <form class="form-inline" th:action="@{/admin/posts/search}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="query" />
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+                <th>#</th>
+                <th>Title</th>
+                <th>Short Description</th>
+                <th>Created On</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+                <tr th:each="postDto, status : ${postDtoList}">
+                    <td th:text="${status.count}"></td>
+                    <td th:text="${postDto.title}"></td>
+                    <td th:text="${postDto.shortDescription}"></td>
+                    <td th:text="${#temporals.format(postDto.createdOn, 'yyyy/MM/dd HH:mm')}"></td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" th:href="@{/admin/posts/{postId}/edit(postId=${postDto.id})}">Edit</a>
+                        <a class="btn btn-sm btn-danger"  th:href="@{/admin/posts/{postId}/delete(postId=${postDto.id})}">Delete</a>
+                        <a class="btn btn-sm btn-info"  th:href="@{/admin/posts/{postUrl}/view(postUrl=${postDto.url})}">View</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer th:replace="~{admin/footer :: footer}"></footer>
+</body>
+</html>
